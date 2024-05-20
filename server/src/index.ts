@@ -6,7 +6,8 @@ import { typeDefs } from "./schema";
 
 const mocks = {
   Query: () => ({
-    tracksForHome: () => [...new Array(6)],
+    // * tracksForHomeクエリが呼び出されたときに、長さが n で各要素がundefinedの配列を返すという意味です。
+    tracksForHome: () => [...new Array(6)], // [undefined, undefined]
   }),
   Track: () => ({
     id: () => "track_01",
