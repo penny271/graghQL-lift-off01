@@ -1,6 +1,9 @@
 import React from "react";
 import { Layout } from "../components";
-import { gql } from "../__generated__/";
+import { gql } from "../__generated__/"; // * index.tsxでexportされたgqlをimport
+import { useQuery } from "@apollo/client";
+import TrackCard from "../containers/track-card";
+import QueryResult from "../components/query-result";
 
 /** TRACKS query to retrieve all tracks */
 const TRACKS = gql(`
@@ -25,7 +28,22 @@ const TRACKS = gql(`
  * We display a grid of tracks fetched with useQuery with the TRACKS query
  */
 const Tracks = () => {
-  return <Layout grid> </Layout>;
+  const { loading, error, data } = useQuery(TRACKS);
+
+  // * QueryResult componentでloading, error, dataの状態を表示
+  // if (loading) return "Loading...";
+  // if (error) return `Error! ${error.message}`;
+
+  return (
+    <Layout grid>
+      <QueryResult error={error} loading={loading} data={data}>
+        {data?.tracksForHome?.map((track) => (
+          <TrackCard key={track.id} track={track} />
+        ))}
+      </QueryResult>
+      ;
+    </Layout>
+  );
 };
 
 export default Tracks;
